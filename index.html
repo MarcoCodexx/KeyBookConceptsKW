@@ -20,6 +20,8 @@
         .concept-summary { background: #fff; border-left: 5px solid var(--accent); padding: 1.5rem; border-radius: 0 15px 15px 0; margin-bottom: 2rem; }
         .delete-btn { position: absolute; top: 10px; right: 10px; color: #ddd; cursor: pointer; transition: 0.2s; }
         .delete-btn:hover { color: var(--secondary); }
+        .iframe-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
     </style>
 </head>
 <body x-data="{
@@ -73,7 +75,7 @@
                     <h1 class='display-5 fw-bold'>Organizational Mastery Dashboard</h1>
                     <p class='text-muted'>Unified principles for Strategy (OKR), Accountability (RBA), and Execution (PMO).</p>
                 </div>
-                <div class='row g-4'>
+                <div class='row g-4 mb-5'>
                     <div class='col-md-4'>
                         <div class='card h-100 p-4 shadow-sm border-0'>
                             <div class='icon-box bg-success text-white shadow-sm'><i class='fas fa-bullseye'></i></div>
@@ -97,6 +99,13 @@
                             <p class='small text-muted'>Transform PMOs into Strategic Partners. Prioritize value delivery and benefit realization over administrative checklists.</p>
                             <button class='btn btn-outline-dark btn-sm mt-auto' @click="page='pmo'">Explore Module</button>
                         </div>
+                    </div>
+                </div>
+                
+                <div class='mb-4'>
+                    <h4 class='mb-3'><i class='fas fa-chart-pie me-2 text-primary'></i> Performance Analytics</h4>
+                    <div class='iframe-container'>
+                        <iframe src='https://lookerstudio.google.com/embed/reporting/b91e1f4b-53c1-4b30-aa70-62a70244e5fb/page/EwQ9D' allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
@@ -221,4 +230,5 @@
 with open('index.html', 'w', encoding='utf-8') as f:
     f.write(html_content)
 
+print("Successfully created updated 'King's Key Concepts' index.html.")
 print("Successfully created updated 'King's Key Concepts' index.html.")
