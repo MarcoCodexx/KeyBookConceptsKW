@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content = r"""<!DOCTYPE html>
 <html lang='en'>
 <head>
     <meta charset='UTF-8'>
@@ -11,23 +11,21 @@
         :root { --primary: #1a2a6c; --secondary: #b21f1f; --accent: #fdbb2d; }
         body { background-color: #f0f2f5; font-family: 'Segoe UI', system-ui, sans-serif; }
         .sidebar { min-height: 100vh; background: linear-gradient(180deg, #1a2a6c, #2c3e50); color: white; padding: 2rem 1rem; position: sticky; top: 0; }
-        .nav-link { color: rgba(255,255,255,0.8); padding: 12px 15px; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .nav-link { color: rgba(255,255,255,0.8); padding: 12px 15px; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; cursor: pointer; display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .nav-link:hover { background: rgba(255,255,255,0.1); color: white; }
         .nav-link.active { background: var(--secondary); color: white; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .card { border: none; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .tool-box { background: #fff; border-radius: 15px; padding: 20px; border-top: 5px solid var(--primary); }
-        .progress-container { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; margin-top: 2rem; }
         .icon-box { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem; }
+        .concept-summary { background: #fff; border-left: 5px solid var(--accent); padding: 1.5rem; border-radius: 0 15px 15px 0; margin-bottom: 2rem; }
     </style>
 </head>
 <body x-data="{
     page: 'home',
-    xp: 0,
     okrItems: [],
     rbaPlans: [],
     newOkr: { obj: '', kr: '' },
     newRba: { result: '', data: '' },
-    quizActive: false,
     quizFinished: false,
     currentQ: 0,
     score: 0,
@@ -46,97 +44,83 @@
     checkAnswer(idx) {
         if(idx === this.questions[this.currentQ].a) this.score++;
         if(this.currentQ < this.questions.length - 1) this.currentQ++;
-        else { this.quizFinished = true; this.xp = 100; }
+        else { this.quizFinished = true; }
     }
 }">
 
 <div class='container-fluid'>
     <div class='row'>
-        <!-- Sidebar -->
-        <nav class='col-md-3 col-lg-2 d-md-block sidebar shadow'>
-            <div class='text-center mb-4'>
+        <nav class='col-md-3 col-lg-2 sidebar shadow'>
+            <div class='text-center mb-5'>
                 <h2 class='h4'>👑 King's Key</h2>
-                <p class='small opacity-75'>Mastery Portal</p>
+                <p class='small opacity-75'>Professional Excellence</p>
             </div>
             <ul class='nav flex-column'>
                 <li class='nav-item'><a class='nav-link' :class="page === 'home' && 'active'" @click="page = 'home'"><i class='fas fa-th-large'></i> Dashboard</a></li>
-                <li class='nav-item'><a class='nav-link' :class="page === 'okr' && 'active'" @click="page = 'okr'; xp = Math.max(xp, 30)"><i class='fas fa-crosshairs'></i> OKR Workshop</a></li>
-                <li class='nav-item'><a class='nav-link' :class="page === 'rba' && 'active'" @click="page = 'rba'; xp = Math.max(xp, 60)"><i class='fas fa-chart-line'></i> RBA Impact</a></li>
-                <li class='nav-item'><a class='nav-link' :class="page === 'pmo' && 'active'" @click="page = 'pmo'; xp = Math.max(xp, 80)"><i class='fas fa-pawn'></i> Strategic PMO</a></li>
-                <li class='nav-item'><a class='nav-link' :class="page === 'quiz' && 'active'" @click="page = 'quiz'"><i class='fas fa-vial'></i> Exam Center</a></li>
+                <li class='nav-item'><a class='nav-link' :class="page === 'okr' && 'active'" @click="page = 'okr'"><i class='fas fa-crosshairs'></i> OKR Workshop</a></li>
+                <li class='nav-item'><a class='nav-link' :class="page === 'rba' && 'active'" @click="page = 'rba'"><i class='fas fa-chart-line'></i> RBA Impact</a></li>
+                <li class='nav-item'><a class='nav-link' :class="page === 'pmo' && 'active'" @click="page = 'pmo'"><i class='fas fa-pawn'></i> Strategic PMO</a></li>
+                <li class='nav-item'><a class='nav-link' :class="page === 'quiz' && 'active'" @click="page = 'quiz'"><i class='fas fa-vial'></i> Mastery Exam</a></li>
             </ul>
-            
-            <div class='progress-container shadow-sm'>
-                <small class='d-block mb-2'>Course Completion</small>
-                <div class='progress' style='height: 8px;'><div class='progress-bar bg-warning' :style='`width: ${xp}%`'></div></div>
-                <small class='d-block mt-2 text-center' x-text='xp + "% Ready"'></small>
-            </div>
         </nav>
 
-        <!-- Main Content -->
         <main class='col-md-9 ms-sm-auto col-lg-10 px-md-5 py-4'>
             
-            <!-- HOME -->
             <div x-show="page === 'home'" x-transition>
                 <div class='mb-5'>
-                    <h1 class='display-5 fw-bold'>Welcome to King's Key Concepts</h1>
-                    <p class='text-muted'>Your integrated resource for organizational excellence and results-driven leadership.</p>
+                    <h1 class='display-5 fw-bold'>Organizational Mastery Dashboard</h1>
+                    <p class='text-muted'>Unified principles for Strategy (OKR), Accountability (RBA), and Execution (PMO).</p>
                 </div>
-
                 <div class='row g-4'>
                     <div class='col-md-4'>
-                        <div class='card h-100 p-4'>
-                            <div class='icon-box bg-success text-white'><i class='fas fa-bullseye'></i></div>
+                        <div class='card h-100 p-4 shadow-sm border-0'>
+                            <div class='icon-box bg-success text-white shadow-sm'><i class='fas fa-bullseye'></i></div>
                             <h5>Measure What Matters</h5>
-                            <p class='small text-muted'>Learn to use OKRs to bridge the gap between strategy and execution. Focus on outcomes, not tasks.</p>
-                            <button class='btn btn-outline-success btn-sm mt-auto' @click="page='okr'">Start OKR</button>
+                            <p class='small text-muted'>Bridge the gap between strategy and execution using Objectives and Key Results. Focus on outcomes that drive mission-critical value.</p>
+                            <button class='btn btn-outline-success btn-sm mt-auto' @click="page='okr'">Explore Module</button>
                         </div>
                     </div>
                     <div class='col-md-4'>
-                        <div class='card h-100 p-4'>
-                            <div class='icon-box bg-danger text-white'><i class='fas fa-users'></i></div>
-                            <h5>Trying Hard Isn't Good Enough</h5>
-                            <p class='small text-muted'>The RBA framework helps you measure if anyone is actually better off because of your work.</p>
-                            <button class='btn btn-outline-danger btn-sm mt-auto' @click="page='rba'">Start RBA</button>
+                        <div class='card h-100 p-4 shadow-sm border-0'>
+                            <div class='icon-box bg-danger text-white shadow-sm'><i class='fas fa-users'></i></div>
+                            <h5>Trying Hard Is Not Good Enough</h5>
+                            <p class='small text-muted'>Shift from simple effort to Results-Based Accountability. Measure if anyone is actually better off because of your programs.</p>
+                            <button class='btn btn-outline-danger btn-sm mt-auto' @click="page='rba'">Explore Module</button>
                         </div>
                     </div>
                     <div class='col-md-4'>
-                        <div class='card h-100 p-4'>
-                            <div class='icon-box bg-warning text-dark'><i class='fas fa-chess-knight'></i></div>
+                        <div class='card h-100 p-4 shadow-sm border-0'>
+                            <div class='icon-box bg-warning text-dark shadow-sm'><i class='fas fa-chess-knight'></i></div>
                             <h5>Leading Successful PMOs</h5>
-                            <p class='small text-muted'>Transforming Project Offices from administrative support into strategic value generators.</p>
-                            <button class='btn btn-outline-dark btn-sm mt-auto' @click="page='pmo'">Start PMO</button>
+                            <p class='small text-muted'>Transform PMOs into Strategic Partners. Prioritize value delivery and benefit realization over administrative checklists.</p>
+                            <button class='btn btn-outline-dark btn-sm mt-auto' @click="page='pmo'">Explore Module</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- OKR WORKSHOP -->
             <div x-show="page === 'okr'" x-transition>
-                <div class='d-flex justify-content-between align-items-center mb-4'>
-                    <h2>🎯 OKR Workshop</h2>
-                    <span class='badge bg-success'>Module 1</span>
+                <h2>🎯 OKR Workshop</h2>
+                <div class='concept-summary shadow-sm'>
+                    <p class='mb-0'>Objectives and Key Results (OKRs) are a collaborative goal-setting protocol that transforms broad visions into measurable execution. <b>Objectives</b> are the qualitative 'What'—inspiring and aggressive goals. <b>Key Results</b> are the quantitative 'How'—measurable milestones that indicate progress. By focusing on alignment and transparency, OKRs ensure every team member understands how their daily tasks contribute to the organization\'s highest priorities.</p>
                 </div>
                 <div class='row'>
                     <div class='col-lg-4'>
-                        <div class='tool-box shadow-sm mb-4'>
-                            <h6>Build Your OKR</h6>
-                            <input type='text' class='form-control mb-2' placeholder='Objective (e.g. Expand reach)' x-model='newOkr.obj'>
-                            <input type='text' class='form-control mb-3' placeholder='Key Result (e.g. 20% Growth)' x-model='newOkr.kr'>
-                            <button class='btn btn-primary w-100' @click="if(newOkr.obj){ okrItems.push({...newOkr}); newOkr.obj=''; newOkr.kr=''; }">Add to Project</button>
+                        <div class='tool-box shadow-sm'>
+                            <h6>Segment Your Project</h6>
+                            <input type='text' class='form-control mb-2' placeholder='Objective (e.g. 100% Client Satisfaction)' x-model='newOkr.obj'>
+                            <input type='text' class='form-control mb-3' placeholder='Key Result (e.g. Reduce wait time by 20%)' x-model='newOkr.kr'>
+                            <button class='btn btn-primary w-100' @click="if(newOkr.obj){ okrItems.push({...newOkr}); newOkr.obj=''; newOkr.kr=''; }">Add OKR Segment</button>
                         </div>
                     </div>
                     <div class='col-lg-8'>
-                        <h5>Your Project Segmentation</h5>
-                        <template x-if='okrItems.length === 0'>
-                            <p class='text-muted small italic'>No items added. Use the tool on the left to start segmenting your project.</p>
-                        </template>
+                        <h5>Project Strategy Board</h5>
                         <div class='row g-3'>
                             <template x-for='(item, index) in okrItems' :key='index'>
                                 <div class='col-md-6'>
-                                    <div class='card p-3 border-start border-success border-4'>
+                                    <div class='card p-3 border-start border-success border-4 shadow-sm'>
                                         <strong x-text='item.obj'></strong>
-                                        <div class='small text-muted' x-text='"KR: " + item.kr'></div>
+                                        <div class='small text-muted mt-1' x-text='"KR: " + item.kr'></div>
                                     </div>
                                 </div>
                             </template>
@@ -145,85 +129,82 @@
                 </div>
             </div>
 
-            <!-- RBA IMPACT -->
             <div x-show="page === 'rba'" x-transition>
-                <h2 class='mb-4'>📊 RBA Impact Planner</h2>
-                <div class='card p-4 mb-4 bg-light'>
-                    <h5>The Turn the Curve Challenge</h5>
-                    <p class='small'>RBA asks: <i>Is anyone better off?</i> Fill out the planner below to practice identifying impact over effort.</p>
+                <h2>📊 RBA Impact Planner</h2>
+                <div class='concept-summary shadow-sm'>
+                    <p class='mb-0'>Results-Based Accountability (RBA) is a disciplined way of thinking and acting to improve the lives of children, families, and the community. It forces a shift from <b>effort</b> (how much we did) to <b>effect</b> (is anyone better off). Through 'Turn the Curve' thinking, teams analyze the 'story' behind data trends, identify partners, and implement evidence-based actions to move the needle on performance measures.</p>
+                </div>
+                <div class='card p-4 mb-4 bg-white shadow-sm'>
+                    <h5>Turn the Curve Tool</h5>
                     <div class='row g-3'>
-                        <div class='col-md-5'>
-                            <input type='text' class='form-control' placeholder='Desired Result (e.g. Safer Streets)' x-model='newRba.result'>
-                        </div>
-                        <div class='col-md-5'>
-                            <input type='text' class='form-control' placeholder='Data Indicator (e.g. % Crime Drop)' x-model='newRba.data'>
-                        </div>
-                        <div class='col-md-2'>
-                            <button class='btn btn-danger w-100' @click="if(newRba.result){ rbaPlans.push({...newRba}); newRba.result=''; newRba.data=''; }">Save</button>
-                        </div>
+                        <div class='col-md-5'><input type='text' class='form-control' placeholder='Desired Result (e.g. Reduced Poverty)' x-model='newRba.result'></div>
+                        <div class='col-md-5'><input type='text' class='form-control' placeholder='Indicator (e.g. % Employment)' x-model='newRba.data'></div>
+                        <div class='col-md-2'><button class='btn btn-danger w-100' @click="if(newRba.result){ rbaPlans.push({...newRba}); newRba.result=''; newRba.data=''; }">Plan Impact</button></div>
                     </div>
                 </div>
                 <div class='row g-3'>
                     <template x-for='plan in rbaPlans'>
                         <div class='col-md-4'>
-                            <div class='card p-3 bg-white'>
+                            <div class='card p-3 shadow-sm'>
                                 <i class='fas fa-heart text-danger mb-2'></i>
                                 <div class='fw-bold' x-text='plan.result'></div>
-                                <div class='small' x-text='"Indicator: " + plan.data'></div>
+                                <div class='small text-muted' x-text='"Success Metric: " + plan.data'></div>
                             </div>
                         </div>
                     </template>
                 </div>
             </div>
 
-            <!-- PMO STRATEGY -->
             <div x-show="page === 'pmo'" x-transition>
-                <h2 class='mb-4'>🏗️ Strategic PMO Delivery</h2>
+                <h2 class='mb-4'>🏗️ Strategic PMO Management</h2>
                 <div class='row g-4'>
-                    <div class='col-md-6'>
-                        <div class='card p-4 h-100'>
-                            <h5>PMO Evolution</h5>
-                            <ul class='list-unstyled mt-3'>
-                                <li class='mb-3'><i class='fas fa-arrow-right text-warning me-2'></i> <b>From:</b> Filling out templates (Administrative)</li>
-                                <li class='mb-3'><i class='fas fa-arrow-right text-success me-2'></i> <b>To:</b> Enabling value realization (Strategic)</li>
+                    <div class='col-md-7'>
+                        <div class='card p-4 mb-4 shadow-sm'>
+                            <h5>The Value Management Office (VMO)</h5>
+                            <p>Modern Project Management Offices are evolving into VMOs. Instead of just managing the <i>triple constraint</i> (Scope, Time, Cost), they manage <b>Value Realization</b>.</p>
+                            <ul class='small'>
+                                <li><b>Agile Governance:</b> Streamlined decision-making with just-in-enough oversight.</li>
+                                <li><b>Strategic Alignment:</b> Ensuring every project directly maps to a high-level OKR.</li>
+                                <li><b>Resource Optimization:</b> Dynamically shifting resources to the highest-value initiatives.</li>
                             </ul>
                         </div>
+                        <div class='card p-4 shadow-sm'>
+                            <h5>PMO Maturity Tiers</h5>
+                            <div class='d-flex flex-column gap-2'>
+                                <div class='p-2 bg-light border-start border-4 border-secondary'>Level 1: Administrative Support (Templates & Reporting)</div>
+                                <div class='p-2 bg-light border-start border-4 border-primary'>Level 2: Center of Excellence (Best Practices & Training)</div>
+                                <div class='p-2 bg-white border-start border-4 border-warning shadow-sm fw-bold'>Level 3: Strategic Partner (Investment & Strategy Management)</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class='col-md-6'>
-                        <div class='card p-4 bg-dark text-white h-100'>
-                            <h6>Pro Tip for PMO Leaders</h6>
-                            <p class='small'>Stop reporting on <i>milestones hit</i> and start reporting on <i>strategic benefits achieved</i>. Use Agile governance to reduce friction.</p>
+                    <div class='col-md-5'>
+                        <div class='card p-4 bg-primary text-white shadow-sm'>
+                            <h6>Pro Insight: Benefit Realization</h6>
+                            <p class='small'>A PMO\'s success is no longer measured by projects finishing 'on time'. It is measured by whether the business benefits envisioned in the business case were actually achieved 6-12 months after closure.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- EXAM CENTER -->
             <div x-show="page === 'quiz'" x-transition>
-                <h2 class='mb-4'>📝 Exam Center</h2>
+                <h2 class='mb-4'>📝 Mastery Exam</h2>
                 <div class='card p-5 text-center shadow-lg' x-show='!quizFinished'>
-                    <div class='mb-4'>
-                        <span class='badge bg-primary' x-text='"Question " + (currentQ + 1) + " of 10"'></span>
-                    </div>
-                    <h4 class='mb-4' x-text='questions[currentQ].q'></h4>
+                    <div class='mb-4'><span class='badge bg-primary' x-text='"Question " + (currentQ + 1) + " of 10"'></span></div>
+                    <h4 class='mb-5' x-text='questions[currentQ].q'></h4>
                     <div class='row g-3'>
                         <template x-for='(opt, i) in questions[currentQ].o' :key='i'>
-                            <div class='col-md-6'>
-                                <button class='btn btn-outline-primary w-100 py-3' @click='checkAnswer(i)' x-text='opt'></button>
-                            </div>
+                            <div class='col-md-6'><button class='btn btn-outline-primary w-100 py-3 shadow-sm' @click='checkAnswer(i)' x-text='opt'></button></div>
                         </template>
                     </div>
                 </div>
-
                 <div class='card p-5 text-center shadow-lg' x-show='quizFinished'>
-                    <div class='icon-box bg-warning mx-auto text-dark' style='width: 80px; height: 80px; font-size: 3rem;'><i class='fas fa-trophy'></i></div>
+                    <div class='icon-box bg-warning mx-auto text-dark shadow-sm' style='width: 80px; height: 80px; font-size: 3rem;'><i class='fas fa-trophy'></i></div>
                     <h2 class='mt-4'>Exam Complete!</h2>
                     <p class='display-4 fw-bold' x-text='score + " / 10"'></p>
-                    <p class='text-muted'>You have earned 100 XP and achieved Certification.</p>
-                    <button class='btn btn-primary px-5' @click="location.reload()">Restart Course</button>
+                    <p class='text-muted' x-text='score >= 8 ? "Mastery Achieved: Certified Concept Expert" : "Keep Learning: Review the modules for higher impact."'></p>
+                    <button class='btn btn-primary px-5 mt-4 shadow-sm' @click="location.reload()">Restart Learning Journey</button>
                 </div>
             </div>
-
         </main>
     </div>
 </div>
@@ -233,4 +214,4 @@
 with open('index.html', 'w', encoding='utf-8') as f:
     f.write(html_content)
 
-print("Successfully created 'King's Key Concepts' index.html.")
+print("Successfully created updated 'King's Key Concepts' index.html.")
