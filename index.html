@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content = r"""<!DOCTYPE html>
 <html lang='en'>
 <head>
     <meta charset='UTF-8'>
@@ -22,6 +22,8 @@
         .delete-btn:hover { color: var(--secondary); }
         .iframe-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .add-icon-btn { cursor: pointer; color: var(--primary); transition: 0.2s; }
+        .add-icon-btn:hover { color: var(--secondary); transform: scale(1.1); }
     </style>
 </head>
 <body x-data="{
@@ -118,11 +120,14 @@
                 <div class='row'>
                     <div class='col-lg-4'>
                         <div class='tool-box shadow-sm'>
-                            <h6>Segment Your Project</h6>
+                            <div class='d-flex justify-content-between align-items-center mb-3'>
+                                <h6 class='mb-0'>Segment Your Project</h6>
+                                <i class='fas fa-plus-circle fa-lg add-icon-btn' title='Add Multiple' @click="if(newOkr.obj){ okrItems.push({...newOkr}); newOkr.obj=''; newOkr.kr=''; newOkr.title=''; }"></i>
+                            </div>
                             <input type='text' class='form-control mb-2' placeholder='Project Title (e.g. Q3 Launch)' x-model='newOkr.title'>
                             <input type='text' class='form-control mb-2' placeholder='Objective (e.g. 100% Client Sat)' x-model='newOkr.obj'>
                             <input type='text' class='form-control mb-3' placeholder='Key Result (e.g. Reduce wait by 20%)' x-model='newOkr.kr'>
-                            <button class='btn btn-primary w-100' @click="if(newOkr.obj){ okrItems.push({...newOkr}); newOkr.obj=''; newOkr.kr=''; newOkr.title=''; }">Add OKR Segment</button>
+                            <button class='btn btn-primary w-100' @click="if(newOkr.obj){ okrItems.push({...newOkr}); newOkr.obj=''; newOkr.kr=''; newOkr.title=''; }">Save OKR</button>
                         </div>
                     </div>
                     <div class='col-lg-8'>
@@ -149,7 +154,10 @@
                     <p class='mb-0'>Results-Based Accountability (RBA) is a disciplined way of thinking and acting to improve the lives of children, families, and the community. It forces a shift from <b>effort</b> (how much we did) to <b>effect</b> (is anyone better off). Through 'Turn the Curve' thinking, teams analyze the 'story' behind data trends, identify partners, and implement evidence-based actions to move the needle on performance measures.</p>
                 </div>
                 <div class='card p-4 mb-4 bg-white shadow-sm'>
-                    <h5>Turn the Curve Tool</h5>
+                    <div class='d-flex justify-content-between align-items-center mb-3'>
+                        <h5 class='mb-0'>Turn the Curve Tool</h5>
+                        <i class='fas fa-plus-circle fa-lg add-icon-btn' title='Add Multiple' @click="if(newRba.result){ rbaPlans.push({...newRba}); newRba.result=''; newRba.data=''; newRba.title=''; }"></i>
+                    </div>
                     <div class='row g-3'>
                         <div class='col-md-3'><input type='text' class='form-control' placeholder='Program Title' x-model='newRba.title'></div>
                         <div class='col-md-4'><input type='text' class='form-control' placeholder='Desired Result' x-model='newRba.result'></div>
@@ -230,5 +238,4 @@
 with open('index.html', 'w', encoding='utf-8') as f:
     f.write(html_content)
 
-print("Successfully created updated 'King's Key Concepts' index.html.")
 print("Successfully created updated 'King's Key Concepts' index.html.")
