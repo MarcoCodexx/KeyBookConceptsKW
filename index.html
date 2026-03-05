@@ -18,14 +18,16 @@ html_content = r"""<!DOCTYPE html>
         .tool-box { background: #fff; border-radius: 15px; padding: 20px; border-top: 5px solid var(--primary); }
         .icon-box { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem; }
         .concept-summary { background: #fff; border-left: 5px solid var(--accent); padding: 1.5rem; border-radius: 0 15px 15px 0; margin-bottom: 2rem; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; color: #ddd; cursor: pointer; transition: 0.2s; }
+        .delete-btn:hover { color: var(--secondary); }
     </style>
 </head>
 <body x-data="{
     page: 'home',
     okrItems: [],
     rbaPlans: [],
-    newOkr: { obj: '', kr: '' },
-    newRba: { result: '', data: '' },
+    newOkr: { title: '', obj: '', kr: '' },
+    newRba: { title: '', result: '', data: '' },
     quizFinished: false,
     currentQ: 0,
     score: 0,
@@ -59,7 +61,7 @@ html_content = r"""<!DOCTYPE html>
                 <li class='nav-item'><a class='nav-link' :class="page === 'home' && 'active'" @click="page = 'home'"><i class='fas fa-th-large'></i> Dashboard</a></li>
                 <li class='nav-item'><a class='nav-link' :class="page === 'okr' && 'active'" @click="page = 'okr'"><i class='fas fa-crosshairs'></i> OKR Workshop</a></li>
                 <li class='nav-item'><a class='nav-link' :class="page === 'rba' && 'active'" @click="page = 'rba'"><i class='fas fa-chart-line'></i> RBA Impact</a></li>
-                <li class='nav-item'><a class='nav-link' :class="page === 'pmo' && 'active'" @click="page = 'pmo'"><i class='fas fa-pawn'></i> Strategic PMO</a></li>
+                <li class='nav-item'><a class='nav-link' :class="page === 'pmo' && 'active'" @click="page = 'pmo'"><i class='fas fa-chess-knight'></i> Strategic PMO</a></li>
                 <li class='nav-item'><a class='nav-link' :class="page === 'quiz' && 'active'" @click="page = 'quiz'"><i class='fas fa-vial'></i> Mastery Exam</a></li>
             </ul>
         </nav>
@@ -108,17 +110,20 @@ html_content = r"""<!DOCTYPE html>
                     <div class='col-lg-4'>
                         <div class='tool-box shadow-sm'>
                             <h6>Segment Your Project</h6>
-                            <input type='text' class='form-control mb-2' placeholder='Objective (e.g. 100% Client Satisfaction)' x-model='newOkr.obj'>
-                            <input type='text' class='form-control mb-3' placeholder='Key Result (e.g. Reduce wait time by 20%)' x-model='newOkr.kr'>
-                            <button class='btn btn-primary w-100' @click="if(newOkr.obj){ okrItems.push({...newOkr}); newOkr.obj=''; newOkr.kr=''; }">Add OKR Segment</button>
+                            <input type='text' class='form-control mb-2' placeholder='Project Title (e.g. Q3 Launch)' x-model='newOkr.title'>
+                            <input type='text' class='form-control mb-2' placeholder='Objective (e.g. 100% Client Sat)' x-model='newOkr.obj'>
+                            <input type='text' class='form-control mb-3' placeholder='Key Result (e.g. Reduce wait by 20%)' x-model='newOkr.kr'>
+                            <button class='btn btn-primary w-100' @click="if(newOkr.obj){ okrItems.push({...newOkr}); newOkr.obj=''; newOkr.kr=''; newOkr.title=''; }">Add OKR Segment</button>
                         </div>
                     </div>
                     <div class='col-lg-8'>
                         <h5>Project Strategy Board</h5>
                         <div class='row g-3'>
                             <template x-for='(item, index) in okrItems' :key='index'>
-                                <div class='col-md-6'>
-                                    <div class='card p-3 border-start border-success border-4 shadow-sm'>
+                                <div class='col-md-6 position-relative'>
+                                    <div class='card p-3 border-start border-success border-4 shadow-sm h-100'>
+                                        <i class='fas fa-times delete-btn' @click='okrItems.splice(index, 1)'></i>
+                                        <div class='badge bg-light text-dark mb-2 w-fit' x-show='item.title' x-text='item.title'></div>
                                         <strong x-text='item.obj'></strong>
                                         <div class='small text-muted mt-1' x-text='"KR: " + item.kr'></div>
                                     </div>
@@ -137,16 +142,18 @@ html_content = r"""<!DOCTYPE html>
                 <div class='card p-4 mb-4 bg-white shadow-sm'>
                     <h5>Turn the Curve Tool</h5>
                     <div class='row g-3'>
-                        <div class='col-md-5'><input type='text' class='form-control' placeholder='Desired Result (e.g. Reduced Poverty)' x-model='newRba.result'></div>
-                        <div class='col-md-5'><input type='text' class='form-control' placeholder='Indicator (e.g. % Employment)' x-model='newRba.data'></div>
-                        <div class='col-md-2'><button class='btn btn-danger w-100' @click="if(newRba.result){ rbaPlans.push({...newRba}); newRba.result=''; newRba.data=''; }">Plan Impact</button></div>
+                        <div class='col-md-3'><input type='text' class='form-control' placeholder='Program Title' x-model='newRba.title'></div>
+                        <div class='col-md-4'><input type='text' class='form-control' placeholder='Desired Result' x-model='newRba.result'></div>
+                        <div class='col-md-3'><input type='text' class='form-control' placeholder='Indicator' x-model='newRba.data'></div>
+                        <div class='col-md-2'><button class='btn btn-danger w-100' @click="if(newRba.result){ rbaPlans.push({...newRba}); newRba.result=''; newRba.data=''; newRba.title=''; }">Plan Impact</button></div>
                     </div>
                 </div>
                 <div class='row g-3'>
-                    <template x-for='plan in rbaPlans'>
-                        <div class='col-md-4'>
-                            <div class='card p-3 shadow-sm'>
-                                <i class='fas fa-heart text-danger mb-2'></i>
+                    <template x-for='(plan, index) in rbaPlans' :key='index'>
+                        <div class='col-md-4 position-relative'>
+                            <div class='card p-3 shadow-sm h-100'>
+                                <i class='fas fa-times delete-btn' @click='rbaPlans.splice(index, 1)'></i>
+                                <div class='badge bg-light text-danger mb-2 w-fit' x-show='plan.title' x-text='plan.title'></div>
                                 <div class='fw-bold' x-text='plan.result'></div>
                                 <div class='small text-muted' x-text='"Success Metric: " + plan.data'></div>
                             </div>
